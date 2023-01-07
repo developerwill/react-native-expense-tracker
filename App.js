@@ -1,3 +1,8 @@
+/* Redux */
+import { Provider } from 'react-redux';
+import { store } from './store/redux/store';
+
+/* Navigation */
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -39,20 +44,22 @@ export default function App() {
         <>
             <StatusBar style="auto"/>
 
-            <NavigationContainer>
-                <Stack.Navigator screenOptions={screenOptions('default')}>
-                    <Stack.Screen
-                        name={screenNames.ExpensesOverview}
-                        component={ExpensesOverview}
-                        options={options(screenNames.ExpensesOverview)}
-                    />
-                    <Stack.Screen
-                        name={screenNames.ManageExpense}
-                        component={ManageExpense}
-                        options={options(screenNames.ManageExpense)}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <Stack.Navigator screenOptions={screenOptions('default')}>
+                        <Stack.Screen
+                            name={screenNames.ExpensesOverview}
+                            component={ExpensesOverview}
+                            options={options(screenNames.ExpensesOverview)}
+                        />
+                        <Stack.Screen
+                            name={screenNames.ManageExpense}
+                            component={ManageExpense}
+                            options={options(screenNames.ManageExpense)}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </Provider>
         </>
     );
 }
