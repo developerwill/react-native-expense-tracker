@@ -3,7 +3,7 @@ import { GlobalStyles } from '../../constants/styles';
 import { getFormattedDate } from '../../utils/date';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ExpenseItem({ description, amount, date }) {
+export default function ExpenseItem({ description, amount, date, id }) {
     const navigation = useNavigation();
 
     function expensePressHandler() {
