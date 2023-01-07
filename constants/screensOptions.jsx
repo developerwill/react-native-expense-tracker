@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { GlobalStyles } from './styles';
 import IconButton from '../components/UI/IconButton';
 import { useNavigation } from '@react-navigation/native';
+import { screenNames } from '../constants/screenNames';
 
 export function screensOptions(screen) {
     const navigation = useNavigation();
@@ -18,14 +19,14 @@ export function screensOptions(screen) {
                 }}/>
             )
         }
-        case 'RecentExpenses': return {
+        case screenNames.RecentExpenses: return {
             title: 'Recent Expenses',
             tabBarLabel: 'Recent',
             tabBarIcon: ({ color, size }) => (
                 <Ionicons name={'hourglass'} size={size} color={color}/>
             )
         }
-        case 'AllExpenses': return {
+        case screenNames.AllExpenses: return {
             title: 'All Expenses',
             tabBarLabel: 'Recent',
             tabBarIcon: ({ color, size }) => (

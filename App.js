@@ -8,6 +8,7 @@ import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
 import { screensOptions } from './constants/screensOptions';
+import { screenNames } from './constants/screenNames';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -16,14 +17,14 @@ function ExpensesOverview() {
     return (
         <BottomTabs.Navigator screenOptions={screensOptions('BottomTabsDefault')}>
             <BottomTabs.Screen
-                name={'RecentExpenses'}
+                name={screenNames.RecentExpenses}
                 component={RecentExpenses}
-                options={screensOptions('RecentExpenses')}
+                options={screensOptions(screenNames.RecentExpenses)}
             />
             <BottomTabs.Screen
-                name={'AllExpenses'}
+                name={screenNames.AllExpenses}
                 component={AllExpenses}
-                options={screensOptions('AllExpenses')}
+                options={screensOptions(screenNames.AllExpenses)}
             />
         </BottomTabs.Navigator>
     );
@@ -37,11 +38,11 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen
-                        name={'ExpensesOverview'}
+                        name={screenNames.ExpensesOverview}
                         component={ExpensesOverview}
                         options={{ headerShown: false }}
                     />
-                    <Stack.Screen name={'ManageExpense'} component={ManageExpense}/>
+                    <Stack.Screen name={screenNames.ManageExpense} component={ManageExpense}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </>
