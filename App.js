@@ -7,15 +7,24 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
+import { screensOptions } from './constants/screensOptions';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
     return (
-        <BottomTabs.Navigator>
-            <BottomTabs.Screen name={'RecentExpenses'} component={RecentExpenses}/>
-            <BottomTabs.Screen name={'AllExpenses'} component={AllExpenses}/>
+        <BottomTabs.Navigator screenOptions={screensOptions.BottomTabsDefault}>
+            <BottomTabs.Screen
+                name={'RecentExpenses'}
+                component={RecentExpenses}
+                options={screensOptions.RecentExpenses}
+            />
+            <BottomTabs.Screen
+                name={'AllExpenses'}
+                component={AllExpenses}
+                options={screensOptions.AllExpenses}
+            />
         </BottomTabs.Navigator>
     );
 }
@@ -32,7 +41,6 @@ export default function App() {
                         component={ExpensesOverview}
                         options={{ headerShown: false }}
                     />
-
                     <Stack.Screen name={'ManageExpense'} component={ManageExpense}/>
                 </Stack.Navigator>
             </NavigationContainer>
