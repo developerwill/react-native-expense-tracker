@@ -8,7 +8,7 @@ const expenseSlice = createSlice({
     },
     reducers: {
         addExpense: (state, action) => {
-            state.allExpenses.push(action.payload.expense);
+            state.allExpenses.push(action.payload);
         },
         deleteExpense: (state, action) => {
             state.allExpenses = state.allExpenses.filter(
@@ -16,15 +16,15 @@ const expenseSlice = createSlice({
             );
         },
         updateExpense: (state, action) => {
-            const expenseIndex = state.allExpenses.find(
-                (expense) => expense.id === action.payload.item.id
+            const id = state.allExpenses.findIndex(
+                (expense) => expense.id === action.payload.id
             );
 
-            const index = state.allExpenses.indexOf(expenseIndex);
-            // this is possible because we can mutate it in redux toolkit
-            allExpenses[index] = {
-                item: item
-            };
+            // Gets current list of expenses and updates it
+            const currentExpenses = [...state.allExpenses];
+            currentExpenses[id] = action.payload;
+
+            state.allExpenses = currentExpenses;
         }
     }
 });

@@ -1,6 +1,6 @@
 /* Redux */
 import { useDispatch } from 'react-redux';
-import { deleteExpense } from '../store/redux/expenses';
+import { deleteExpense, addExpense, updateExpense } from '../store/redux/expensesSlice';
 
 import { useLayoutEffect } from 'react';
 import IconButton from '../components/UI/IconButton';
@@ -29,6 +29,27 @@ export default function ManageExpense({ route, navigation }) {
     }
 
     function confirmHandler() {
+        if (!expenseID) {
+            dispatch(addExpense(
+                {
+                    id: 'e99',
+                    description: 'Test',
+                    amount: 99.99,
+                    date: new Date('2023-01-02')
+                }
+            ));
+            navigation.goBack();
+            return;
+        }
+
+        dispatch(updateExpense(
+            {
+                id: 'e99',
+                description: 'Test update!',
+                amount: 100,
+                date: new Date('2023-01-02')
+            }
+        ));
         navigation.goBack();
     }
 
