@@ -25,7 +25,8 @@ export function options(screen) {
             };
         case screenNames.ManageExpense:
             return {
-                title: 'Manage Expense'
+                title: 'Manage Expense',
+                presentation: 'modal'
             };
     }
 }
