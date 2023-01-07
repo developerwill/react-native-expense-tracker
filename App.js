@@ -14,16 +14,16 @@ const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
     return (
-        <BottomTabs.Navigator screenOptions={screensOptions.BottomTabsDefault}>
+        <BottomTabs.Navigator screenOptions={screensOptions('BottomTabsDefault')}>
             <BottomTabs.Screen
                 name={'RecentExpenses'}
                 component={RecentExpenses}
-                options={screensOptions.RecentExpenses}
+                options={screensOptions('RecentExpenses')}
             />
             <BottomTabs.Screen
                 name={'AllExpenses'}
                 component={AllExpenses}
-                options={screensOptions.AllExpenses}
+                options={screensOptions('AllExpenses')}
             />
         </BottomTabs.Navigator>
     );
