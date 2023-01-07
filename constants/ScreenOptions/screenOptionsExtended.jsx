@@ -2,10 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import { GlobalStyles } from '../styles';
 import IconButton from '../../components/UI/IconButton';
 
-export function screenOptionsExtended(screen) {
+export function screenOptionsExtended(navigator) {
     const navigation = useNavigation();
 
-    switch (screen) {
+    switch (navigator) {
         case 'bottomTabsDefault':
             return {
                 headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
