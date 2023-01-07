@@ -1,3 +1,7 @@
+/* Redux */
+import { useDispatch } from 'react-redux';
+import { deleteExpense } from '../store/redux/expenses';
+
 import { useLayoutEffect } from 'react';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
@@ -5,8 +9,9 @@ import Button from '../components/UI/Button';
 import { StyleSheet, View } from 'react-native';
 
 export default function ManageExpense({ route, navigation }) {
-    const toEdit = route.params?.expenseID;
-    const isEditing = !!toEdit; // converts the value into a boolean
+    const expenseID = route.params?.expenseID;
+    const isEditing = !!expenseID; // converts the value into a boolean
+    const dispatch = useDispatch();
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -15,6 +20,7 @@ export default function ManageExpense({ route, navigation }) {
     }, [navigation, isEditing]);
 
     function deleteExpenseHandler() {
+        dispatch(deleteExpense({ id: expenseID }));
         navigation.goBack();
     }
 
