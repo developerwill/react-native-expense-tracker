@@ -9,7 +9,7 @@ export default function ExpenseItem({ description, amount, date }) {
 
     return (
         <View style={styles.expenseItemOuter}>
-            <Pressable onPress={expensePressHandler} style={styles.expenseContainer} android_ripple={{color: 'rgba(204,204,204,0.58)'}}>
+            <Pressable onPress={expensePressHandler} android_ripple={{color: 'rgba(204,204,204,0.58)'}}>
                 <View style={styles.expenseItem}>
                     <View>
                         <Text style={[styles.textBase, styles.description]}>{description}</Text>
@@ -31,11 +31,8 @@ const styles = StyleSheet.create({
         backgroundColor: GlobalStyles.colors.primary500,
         overflow: 'hidden'
     },
-    expenseContainer: {
-        padding: 12,
-        borderRadius: 6
-    },
     expenseItem: {
+        padding: 12,
         borderRadius: 6,
         flexDirection: 'row',
         justifyContent: 'space-between'
