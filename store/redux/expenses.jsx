@@ -1,20 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
+import DUMMY_DATA from '../../data/DUMMY_DATA';
 
 const expenseSlice = createSlice({
     name: 'expenses',
     initialState: {
-        ids: []
+        allExpenses: DUMMY_DATA
     },
     reducers: {
         addExpense: (state, action) => {
-            state.ids.push(action.payload.id);
+            state.allExpenses.push(action.payload.expense);
         },
-        removeExpense: (state, action) => {
-            state.ids.splice(state.ids.indexOf(action.payload.id), 1);
+        deleteExpense: (state, action) => {
+            state.allExpenses = state.allExpenses.filter(
+                (expense) => expense.id !== action.payload.id
+            );
+        },
+        updateExpense: (state, action) => {
+            const expenseIndex = state.allExpenses.find(
+                (expense) => expense.id === action.payload.item.id
+            );
+
+            const index = state.allExpenses.indexOf(expenseIndex);
+            // this is possible because we can mutate it in redux toolkit
+            allExpenses[index] = {
+                item: item
+            };
         }
     }
 });
 
 export const addExpense = expenseSlice.actions.addExpense;
-export const removeExpense = expenseSlice.actions.removeExpense;
+export const deleteExpense = expenseSlice.actions.deleteExpense;
+export const updateExpense = expenseSlice.actions.updateExpense;
 export default expenseSlice.reducer;
