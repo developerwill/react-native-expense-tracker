@@ -8,29 +8,37 @@ export default function ExpenseItem({ description, amount, date }) {
     }
 
     return (
-        <Pressable onPress={expensePressHandler} style={({pressed}) => pressed && styles.pressed}>
-            <View style={styles.expenseItem}>
-                <View>
-                    <Text style={[styles.textBase, styles.description]}>{description}</Text>
-                    <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+        <View style={styles.expenseItemOuter}>
+            <Pressable onPress={expensePressHandler} style={styles.expenseContainer} android_ripple={{color: 'rgba(204,204,204,0.58)'}}>
+                <View style={styles.expenseItem}>
+                    <View>
+                        <Text style={[styles.textBase, styles.description]}>{description}</Text>
+                        <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+                    </View>
+                    <View style={styles.amountContainer}>
+                        <Text style={styles.amount}>{amount.toFixed(2)}</Text>
+                    </View>
                 </View>
-                <View style={styles.amountContainer}>
-                    <Text style={styles.amount}>{amount.toFixed(2)}</Text>
-                </View>
-            </View>
-        </Pressable>
+            </Pressable>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    expenseItem: {
-        padding: 12,
+    expenseItemOuter: {
         marginVertical: 8,
-        backgroundColor: GlobalStyles.colors.primary500,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         borderRadius: 6,
-        elevation: 3
+        backgroundColor: GlobalStyles.colors.primary500,
+        overflow: 'hidden'
+    },
+    expenseContainer: {
+        padding: 12,
+        borderRadius: 6
+    },
+    expenseItem: {
+        borderRadius: 6,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     textBase: {
         color: GlobalStyles.colors.primary50
