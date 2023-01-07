@@ -4,27 +4,31 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 /* Screens */
+import { screenNames } from './constants/screenNames';
 import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
 import AllExpenses from './screens/AllExpenses';
-import { screensOptions } from './constants/screensOptions';
-import { screenNames } from './constants/screenNames';
+
+/* Screen Options */
+import { options } from './constants/ScreenOptions/options';
+import { screenOptionsExtended } from './constants/ScreenOptions/screenOptionsExtended';
+import { screenOptions } from './constants/ScreenOptions/screenOptions';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
     return (
-        <BottomTabs.Navigator screenOptions={screensOptions('BottomTabsDefault')}>
+        <BottomTabs.Navigator screenOptions={screenOptionsExtended('bottomTabsDefault')}>
             <BottomTabs.Screen
                 name={screenNames.RecentExpenses}
                 component={RecentExpenses}
-                options={screensOptions(screenNames.RecentExpenses)}
+                options={options(screenNames.RecentExpenses)}
             />
             <BottomTabs.Screen
                 name={screenNames.AllExpenses}
                 component={AllExpenses}
-                options={screensOptions(screenNames.AllExpenses)}
+                options={options(screenNames.AllExpenses)}
             />
         </BottomTabs.Navigator>
     );
@@ -36,13 +40,17 @@ export default function App() {
             <StatusBar style="auto"/>
 
             <NavigationContainer>
-                <Stack.Navigator>
+                <Stack.Navigator screenOptions={screenOptions('default')}>
                     <Stack.Screen
                         name={screenNames.ExpensesOverview}
                         component={ExpensesOverview}
-                        options={{ headerShown: false }}
+                        options={options(screenNames.ExpensesOverview)}
                     />
-                    <Stack.Screen name={screenNames.ManageExpense} component={ManageExpense}/>
+                    <Stack.Screen
+                        name={screenNames.ManageExpense}
+                        component={ManageExpense}
+                        options={options(screenNames.ManageExpense)}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </>
