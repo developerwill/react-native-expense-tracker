@@ -14,7 +14,7 @@ export function options(screen) {
         case screenNames.AllExpenses:
             return {
                 title: 'All Expenses',
-                tabBarLabel: 'Recent',
+                tabBarLabel: 'All',
                 tabBarIcon: ({ color, size }) => (
                     <Ionicons name={'calendar'} size={size} color={color}/>
                 )
