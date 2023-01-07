@@ -7,6 +7,10 @@ export default function AllExpenses() {
     const expenses = useSelector((state) => state.expensesList.allExpenses);
 
     return (
-        <ExpensesOutput expensesPeriod={'Total'} expenses={expenses}/>
+        <ExpensesOutput
+            expensesPeriod={'Total'}
+            expenses={expenses}
+            fallbackText={'No registered expenses found!'}
+        />
     );
 }
