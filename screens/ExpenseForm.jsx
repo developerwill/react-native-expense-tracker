@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import CustomInput from '../components/ManageExpense/CustomInput';
 import { useState } from 'react';
 import Button from '../components/UI/Button';
@@ -47,7 +47,7 @@ export default function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValu
         const dateIsValid = date.toString() !== 'Invalid Date';
         const descriptionIsValid = description.trim().length > 0;
 
-        if(!amountIsValid || !dateIsValid || !descriptionIsValid) {
+        if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
             setInputs((currentInputs) => {
                 return {
                     amount: {
@@ -62,7 +62,7 @@ export default function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValu
                         value: currentInputs.description.value,
                         isValid: descriptionIsValid
                     }
-                }
+                };
             });
             return;
         }
@@ -76,22 +76,33 @@ export default function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValu
             <Text style={styles.title}>Your Expense</Text>
 
             <View style={styles.amountDate}>
-                <CustomInput label={'Amount'} style={styles.input} textInputConfig={{
-                    keyboardType: 'decimal-pad',
-                    onChangeText: inputChangeHandler.bind(this, 'amount'),
-                    value: inputs.amount.value
-                }}
+                <CustomInput
+                    label={'Amount'}
+                    invalid={!inputs.amount.isValid}
+                    style={styles.input}
+                    textInputConfig={{
+                        keyboardType: 'decimal-pad',
+                        onChangeText: inputChangeHandler.bind(this, 'amount'),
+                        value: inputs.amount.value
+                    }}
                 />
-                <CustomInput label={'Date'} style={styles.input} textInputConfig={{
-                    placeholder: 'YYYY-MM-DD',
-                    maxLength: 10,
-                    onChangeText: inputChangeHandler.bind(this, 'date'),
-                    value: inputs.date.value
-                }}
+                <CustomInput
+                    label={'Date'}
+                    invalid={!inputs.date.isValid}
+                    style={styles.input}
+                    textInputConfig={{
+                        placeholder: 'YYYY-MM-DD',
+                        maxLength: 10,
+                        onChangeText: inputChangeHandler.bind(this, 'date'),
+                        value: inputs.date.value
+                    }}
                 />
             </View>
 
-            <CustomInput label={'Description'} textInputConfig={{
+            <CustomInput
+                label={'Description'}
+                invalid={!inputs.description.isValid}
+                textInputConfig={{
                 multiline: true,
                 numberOfLines: 4,
                 onChangeText: inputChangeHandler.bind(this, 'description'),
