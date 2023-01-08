@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import CustomInput from '../components/ManageExpense/CustomInput';
 import { useState } from 'react';
 import Button from '../components/UI/Button';
@@ -28,6 +28,28 @@ export default function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValu
             date: new Date(inputValues.date),
             description: inputValues.description
         };
+
+        const fields = [
+            {
+                "name": "amount",
+                valid: !isNaN(expenseData.amount) && expenseData.amount > 0
+            },
+            {
+                "name": "date",
+                valid: expenseData.date.toString() !== 'Invalid Date'
+            },
+            {
+                "name": "description",
+                valid: expenseData.description.trim().length > 0
+            },
+        ];
+
+        const errors = fields.some((input) => input.valid === false);
+
+        if(errors) {
+            Alert.alert('Invalid input', 'Please check input values');
+            return;
+        }
 
         onSubmit(expenseData);
     }
