@@ -20,7 +20,13 @@ export default function ExpenseForm({onCancel, onSubmit, isEditing}) {
     }
 
     function submitHandler() {
-
+        const expenseData = {
+            id: Math.random().toString(),
+            amount: +inputValues.amount,
+            date: new Date(inputValues.date),
+            description: inputValues.description
+        }
+       onSubmit(expenseData);
     }
 
     return (
@@ -53,7 +59,7 @@ export default function ExpenseForm({onCancel, onSubmit, isEditing}) {
 
             <View style={styles.buttonsContainer}>
                 <Button style={styles.button} mode={'flat'} onPress={onCancel}>Cancel</Button>
-                <Button style={styles.button} onPress={onSubmit}>{isEditing ? 'Update' : 'Add'}</Button>
+                <Button style={styles.button} onPress={submitHandler}>{isEditing ? 'Update' : 'Add'}</Button>
             </View>
         </View>
     );

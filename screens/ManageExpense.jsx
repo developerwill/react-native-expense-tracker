@@ -28,34 +28,24 @@ export default function ManageExpense({ route, navigation }) {
         navigation.goBack();
     }
 
-    function confirmHandler() {
+    function confirmHandler(expenseData) {
         if (!expenseID) {
-            dispatch(addExpense(
-                {
-                    id: 'e99',
-                    description: 'Test',
-                    amount: 99.99,
-                    date: new Date('2023-01-02')
-                }
-            ));
+            dispatch(addExpense(expenseData));
             navigation.goBack();
             return;
         }
 
-        dispatch(updateExpense(
-            {
-                id: 'e99',
-                description: 'Test update!',
-                amount: 100,
-                date: new Date('2023-01-02')
-            }
-        ));
+        dispatch(updateExpense(expenseData));
         navigation.goBack();
     }
 
     return (
         <View style={styles.container}>
-            <ExpenseForm onCancel={cancelHandler} onSubmit={confirmHandler} isEditing={isEditing}/>
+            <ExpenseForm
+                onCancel={cancelHandler}
+                onSubmit={confirmHandler}
+                isEditing={isEditing}
+            />
 
             {isEditing && (
                 <View style={styles.deleteContainer}>
