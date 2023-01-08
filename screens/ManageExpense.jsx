@@ -5,7 +5,6 @@ import { deleteExpense, addExpense, updateExpense } from '../store/redux/expense
 import { useLayoutEffect } from 'react';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
-import Button from '../components/UI/Button';
 import { StyleSheet, View } from 'react-native';
 import ExpenseForm from './ExpenseForm';
 
@@ -56,11 +55,8 @@ export default function ManageExpense({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <ExpenseForm />
-            <View style={styles.buttonsContainer}>
-                <Button style={styles.button} mode={'flat'} onPress={cancelHandler}>Cancel</Button>
-                <Button style={styles.button} onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</Button>
-            </View>
+            <ExpenseForm onCancel={cancelHandler} onSubmit={confirmHandler} isEditing={isEditing}/>
+
             {isEditing && (
                 <View style={styles.deleteContainer}>
                     <IconButton
@@ -87,16 +83,5 @@ const styles = StyleSheet.create({
         borderTopWidth: 2,
         borderTopColor: GlobalStyles.colors.primary200,
         alignItems: 'center'
-    },
-    buttonsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    button: {
-        borderRadius: 6,
-        minWidth: 120,
-        marginHorizontal: 8,
-        overflow: 'hidden'
     }
 });

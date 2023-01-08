@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import CustomInput from '../components/ManageExpense/CustomInput';
 import { useState } from 'react';
+import Button from '../components/UI/Button';
 
-export default function ExpenseForm() {
+export default function ExpenseForm({onCancel, onSubmit, isEditing}) {
     const [inputValues, setInputValues] = useState({
         amount: '',
         date: '',
@@ -18,9 +19,14 @@ export default function ExpenseForm() {
         });
     }
 
+    function submitHandler() {
+
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Your Expense</Text>
+
             <View style={styles.amountDate}>
                 <CustomInput label={'Amount'} style={styles.input} textInputConfig={{
                     keyboardType: 'decimal-pad',
@@ -36,6 +42,7 @@ export default function ExpenseForm() {
                 }}
                 />
             </View>
+
             <CustomInput label={'Description'} textInputConfig={{
                 multiline: true,
                 numberOfLines: 4,
@@ -43,6 +50,11 @@ export default function ExpenseForm() {
                 value: inputValues.description
             }}
             />
+
+            <View style={styles.buttonsContainer}>
+                <Button style={styles.button} mode={'flat'} onPress={onCancel}>Cancel</Button>
+                <Button style={styles.button} onPress={onSubmit}>{isEditing ? 'Update' : 'Add'}</Button>
+            </View>
         </View>
     );
 }
@@ -63,5 +75,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 40
+    },
+    button: {
+        borderRadius: 6,
+        minWidth: 120,
+        marginHorizontal: 8,
+        overflow: 'hidden'
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 16
     }
 });
