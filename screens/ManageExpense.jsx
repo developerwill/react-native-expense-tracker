@@ -1,5 +1,5 @@
 /* Redux */
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteExpense, addExpense, updateExpense } from '../store/redux/expensesSlice';
 
 import { useLayoutEffect } from 'react';
@@ -12,6 +12,11 @@ export default function ManageExpense({ route, navigation }) {
     const expenseID = route.params?.expenseID;
     const isEditing = !!expenseID; // converts the value into a boolean
     const dispatch = useDispatch();
+
+    const expenseData = useSelector((state) =>
+        state.expensesList.allExpenses.find((expense) =>
+            expense.id === expenseID
+        ));
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -45,6 +50,7 @@ export default function ManageExpense({ route, navigation }) {
                 onCancel={cancelHandler}
                 onSubmit={confirmHandler}
                 isEditing={isEditing}
+                defaultValues={expenseData}
             />
 
             {isEditing && (
