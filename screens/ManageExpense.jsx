@@ -7,6 +7,7 @@ import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import { StyleSheet, View } from 'react-native';
 import ExpenseForm from './ExpenseForm';
+import { storeExpense } from '../utils/http';
 
 export default function ManageExpense({ route, navigation }) {
     const expenseID = route.params?.expenseID;
@@ -35,6 +36,7 @@ export default function ManageExpense({ route, navigation }) {
 
     function confirmHandler(expenseData) {
         if (!expenseID) {
+            storeExpense(expenseData);
             dispatch(addExpense(expenseData));
             navigation.goBack();
             return;
