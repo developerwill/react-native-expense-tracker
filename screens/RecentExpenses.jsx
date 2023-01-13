@@ -1,8 +1,18 @@
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { useSelector } from 'react-redux';
 import { getDateMinusDays } from '../utils/date';
+import { useEffect } from 'react';
+import { fetchExpenses } from '../utils/http';
 
 export default function RecentExpenses(){
+    useEffect(() => {
+        async function getExpenses() {
+            const expenses = await fetchExpenses();
+        }
+
+        getExpenses();
+    }, []);
+
     const recentExpenses = useSelector((state) =>
         state.expensesList.allExpenses.filter((expense) => {
             const today = new Date();
