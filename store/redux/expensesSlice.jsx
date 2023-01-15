@@ -7,7 +7,7 @@ const expenseSlice = createSlice({
     },
     reducers: {
         setExpenses: (state, action) => {
-            state.allExpenses = action.payload;
+            state.allExpenses = action.payload.reverse();
         },
         addExpense: (state, action) => {
             state.allExpenses.push(action.payload);
