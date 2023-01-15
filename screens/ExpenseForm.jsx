@@ -7,7 +7,6 @@ import { GlobalStyles } from '../constants/styles';
 
 export default function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValues }) {
     const [inputs, setInputs] = useState({
-        id: defaultValues ? defaultValues.id : Math.random().toString(),
         amount: {
             value: defaultValues ? defaultValues.amount.toString() : '',
             isValid: true // Equals to defaultValues ? true : false;
@@ -37,7 +36,6 @@ export default function ExpenseForm({ onCancel, onSubmit, isEditing, defaultValu
         const description = inputs.description.value;
 
         const expenseData = {
-            id: inputs.id,
             amount: amount,
             date: date,
             description: description

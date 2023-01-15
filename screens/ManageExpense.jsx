@@ -48,16 +48,17 @@ export default function ManageExpense({ route, navigation }) {
         navigation.goBack();
     }
 
-    function confirmHandler(expenseData) {
+    async function confirmHandler(expenseData) {
         if (!expenseID) {
-            storeExpense(expenseData);
-            dispatch(addExpense(expenseData));
+            const id = await storeExpense(expenseData);
+
+            dispatch(addExpense({ ...expenseData, id: id }));
             setUpdatedExpenses(true);
             navigation.goBack();
             return;
         }
 
-        dispatch(updateExpense(expenseData));
+        dispatch(updateExpense({ ...expenseData, id: expenseID }));
         navigation.goBack();
     }
 
