@@ -1,18 +1,8 @@
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
-import { useEffect, useState } from 'react';
-import { fetchExpenses } from '../utils/http';
+import { useSelector } from 'react-redux';
 
 export default function AllExpenses() {
-    const [fetchedExpenses, setFetchedExpenses] = useState([]);
-
-    useEffect(() => {
-        async function getExpenses() {
-            const expenses = await fetchExpenses();
-            setFetchedExpenses(expenses);
-        }
-
-        void getExpenses();
-    }, []);
+    const fetchedExpenses = useSelector((state) => state.expensesList.allExpenses);
 
     return (
         <ExpensesOutput
