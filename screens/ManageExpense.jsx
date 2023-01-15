@@ -12,6 +12,7 @@ import ExpenseForm from './ExpenseForm';
 
 import { firebaseDeleteExpense, firebaseUpdateExpense, storeExpense } from '../utils/http';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import ErrorOverlay from '../components/UI/ErrorOverlay';
 
 export default function ManageExpense({ route, navigation }) {
     const expenseID = route.params?.expenseID;
@@ -19,6 +20,7 @@ export default function ManageExpense({ route, navigation }) {
     const dispatch = useDispatch();
     const [updatedExpenses, setUpdatedExpenses] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
 
     const expenseData = useSelector((state) =>
         state.expensesList.allExpenses.find((expense) =>
@@ -43,9 +45,15 @@ export default function ManageExpense({ route, navigation }) {
 
     async function deleteExpenseHandler() {
         setIsSubmitting(true);
-        await firebaseDeleteExpense(expenseID);
-        dispatch(deleteExpense({ id: expenseID }));
-        navigation.goBack();
+
+        try {
+            await firebaseDeleteExpense(expenseID);
+            dispatch(deleteExpense({ id: expenseID }));
+            navigation.goBack();
+        } catch (error) {
+            setError('Could not delete expense - Try again later');
+            setIsSubmitting(false);
+        }
     }
 
     function cancelHandler() {
@@ -55,18 +63,27 @@ export default function ManageExpense({ route, navigation }) {
     async function confirmHandler(expenseData) {
         setIsSubmitting(true);
 
-        if (!expenseID) {
-            const id = await storeExpense(expenseData);
+        try {
+            if (!expenseID) {
+                const id = await storeExpense(expenseData);
 
-            dispatch(addExpense({ ...expenseData, id: id }));
-            setUpdatedExpenses(true);
+                dispatch(addExpense({ ...expenseData, id: id }));
+                setUpdatedExpenses(true);
+                navigation.goBack();
+                return;
+            }
+
+            await firebaseUpdateExpense(expenseID, expenseData);
+            dispatch(updateExpense({ ...expenseData, id: expenseID }));
             navigation.goBack();
-            return;
+        } catch (error) {
+            setError('Could not save date - Try again later');
+            setIsSubmitting(false);
         }
+    }
 
-        await firebaseUpdateExpense(expenseID, expenseData);
-        dispatch(updateExpense({ ...expenseData, id: expenseID }));
-        navigation.goBack();
+    if(error && !isSubmitting) {
+        return <ErrorOverlay message={error}/>
     }
 
     if(isSubmitting) {

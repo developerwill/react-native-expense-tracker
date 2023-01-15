@@ -12,16 +12,22 @@ import { firebaseFetchExpenses } from '../utils/http';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { getDateMinusDays } from '../utils/date';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import ErrorOverlay from '../components/UI/ErrorOverlay';
 
 export default function RecentExpenses() {
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function getExpenses() {
-            const expenses = await firebaseFetchExpenses();
+            try {
+                const expenses = await firebaseFetchExpenses();
+                dispatch(setExpenses(expenses));
+            } catch (error) {
+                setError('Could not fetch expenses!');
+            }
             setIsLoading(false);
-            dispatch(setExpenses(expenses));
         }
 
         void getExpenses();
@@ -35,6 +41,10 @@ export default function RecentExpenses() {
             return (expense.date > date7daysAgo) && (expense.date <= today);
         })
     );
+
+    if(error && !isLoading) {
+        return <ErrorOverlay message={error}/>
+    }
 
     if (isLoading) {
         return <LoadingOverlay/>;
