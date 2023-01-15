@@ -11,12 +11,14 @@ import { StyleSheet, View } from 'react-native';
 import ExpenseForm from './ExpenseForm';
 
 import { firebaseDeleteExpense, firebaseUpdateExpense, storeExpense } from '../utils/http';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 export default function ManageExpense({ route, navigation }) {
     const expenseID = route.params?.expenseID;
     const isEditing = !!expenseID; // converts the value into a boolean
     const dispatch = useDispatch();
     const [updatedExpenses, setUpdatedExpenses] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const expenseData = useSelector((state) =>
         state.expensesList.allExpenses.find((expense) =>
@@ -39,8 +41,9 @@ export default function ManageExpense({ route, navigation }) {
         });
     }, [navigation, isEditing, updatedExpenses]);
 
-    function deleteExpenseHandler() {
-        firebaseDeleteExpense(expenseID);
+    async function deleteExpenseHandler() {
+        setIsSubmitting(true);
+        await firebaseDeleteExpense(expenseID);
         dispatch(deleteExpense({ id: expenseID }));
         navigation.goBack();
     }
@@ -50,6 +53,8 @@ export default function ManageExpense({ route, navigation }) {
     }
 
     async function confirmHandler(expenseData) {
+        setIsSubmitting(true);
+
         if (!expenseID) {
             const id = await storeExpense(expenseData);
 
@@ -59,9 +64,13 @@ export default function ManageExpense({ route, navigation }) {
             return;
         }
 
-        firebaseUpdateExpense(expenseID, expenseData)
+        await firebaseUpdateExpense(expenseID, expenseData);
         dispatch(updateExpense({ ...expenseData, id: expenseID }));
         navigation.goBack();
+    }
+
+    if(isSubmitting) {
+        return <LoadingOverlay/>
     }
 
     return (

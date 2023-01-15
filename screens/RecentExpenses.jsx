@@ -3,21 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setExpenses } from '../store/redux/expensesSlice';
 
 /* React */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /* Axios */
-import { fetchExpenses } from '../utils/http';
+import { firebaseFetchExpenses } from '../utils/http';
 
 /* Other Imports */
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { getDateMinusDays } from '../utils/date';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
-export default function RecentExpenses(){
+export default function RecentExpenses() {
+    const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function getExpenses() {
-            const expenses = await fetchExpenses();
+            const expenses = await firebaseFetchExpenses();
+            setIsLoading(false);
             dispatch(setExpenses(expenses));
         }
 
@@ -32,6 +35,10 @@ export default function RecentExpenses(){
             return (expense.date > date7daysAgo) && (expense.date <= today);
         })
     );
+
+    if (isLoading) {
+        return <LoadingOverlay/>;
+    }
 
     return (
         <ExpensesOutput
