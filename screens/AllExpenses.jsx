@@ -1,15 +1,23 @@
-/* Redux */
-import { useSelector } from 'react-redux';
-
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
+import { useEffect, useState } from 'react';
+import { fetchExpenses } from '../utils/http';
 
 export default function AllExpenses() {
-    const expenses = useSelector((state) => state.expensesList.allExpenses);
+    const [fetchedExpenses, setFetchedExpenses] = useState([]);
+
+    useEffect(() => {
+        async function getExpenses() {
+            const expenses = await fetchExpenses();
+            setFetchedExpenses(expenses);
+        }
+
+        void getExpenses();
+    }, []);
 
     return (
         <ExpensesOutput
             expensesPeriod={'Total'}
-            expenses={expenses}
+            expenses={fetchedExpenses}
             fallbackText={'No registered expenses found!'}
         />
     );

@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import DUMMY_DATA from '../../data/DUMMY_DATA';
 
 const expenseSlice = createSlice({
     name: 'expenses',
     initialState: {
-        allExpenses: DUMMY_DATA
+        allExpenses: []
     },
     reducers: {
         addExpense: (state, action) => {
