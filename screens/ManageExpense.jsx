@@ -1,29 +1,43 @@
 /* Redux */
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteExpense, addExpense, updateExpense } from '../store/redux/expensesSlice';
+import { deleteExpense, addExpense, updateExpense, setExpenses } from '../store/redux/expensesSlice';
 
-import { useLayoutEffect } from 'react';
+/* React */
+import { useEffect, useLayoutEffect, useState } from 'react';
+
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import { StyleSheet, View } from 'react-native';
 import ExpenseForm from './ExpenseForm';
+
 import { storeExpense } from '../utils/http';
 
 export default function ManageExpense({ route, navigation }) {
     const expenseID = route.params?.expenseID;
     const isEditing = !!expenseID; // converts the value into a boolean
     const dispatch = useDispatch();
+    const [updatedExpenses, setUpdatedExpenses] = useState(false);
 
     const expenseData = useSelector((state) =>
         state.expensesList.allExpenses.find((expense) =>
             expense.id === expenseID
         ));
 
+    useEffect(() => {
+        if(updatedExpenses) {
+            async function getExpenses() {
+                const expenses = await updatedExpenses();
+                dispatch(setExpenses(expenses));
+            }
+            void getExpenses();
+        }
+    }, []);
+
     useLayoutEffect(() => {
         navigation.setOptions({
             title: isEditing ? 'Edit Expense' : 'Add Expense'
         });
-    }, [navigation, isEditing]);
+    }, [navigation, isEditing, updatedExpenses]);
 
     function deleteExpenseHandler() {
         dispatch(deleteExpense({ id: expenseID }));
@@ -38,6 +52,7 @@ export default function ManageExpense({ route, navigation }) {
         if (!expenseID) {
             storeExpense(expenseData);
             dispatch(addExpense(expenseData));
+            setUpdatedExpenses(true);
             navigation.goBack();
             return;
         }
