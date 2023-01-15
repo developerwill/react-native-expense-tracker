@@ -7,7 +7,7 @@ export async function storeExpense(expenseData) {
     return response.data.name; // This is the Firebase object ID
 }
 
-export async function fetchExpenses() {
+export async function firebaseFetchExpenses() {
     const response = await axios.get(BACKEND_URL + 'expenses.json');
 
     const expenses = [];
@@ -23,4 +23,12 @@ export async function fetchExpenses() {
     }
 
     return expenses;
+}
+
+export function firebaseUpdateExpense(id, expenseData) {
+    return axios.put(BACKEND_URL + `expenses/${id}.json`, expenseData)
+}
+
+export function firebaseDeleteExpense(id) {
+    return axios.delete(BACKEND_URL + `expenses/${id}.json`)
 }

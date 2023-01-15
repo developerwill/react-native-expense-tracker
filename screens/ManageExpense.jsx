@@ -10,7 +10,7 @@ import { GlobalStyles } from '../constants/styles';
 import { StyleSheet, View } from 'react-native';
 import ExpenseForm from './ExpenseForm';
 
-import { storeExpense } from '../utils/http';
+import { firebaseDeleteExpense, firebaseUpdateExpense, storeExpense } from '../utils/http';
 
 export default function ManageExpense({ route, navigation }) {
     const expenseID = route.params?.expenseID;
@@ -40,6 +40,7 @@ export default function ManageExpense({ route, navigation }) {
     }, [navigation, isEditing, updatedExpenses]);
 
     function deleteExpenseHandler() {
+        firebaseDeleteExpense(expenseID);
         dispatch(deleteExpense({ id: expenseID }));
         navigation.goBack();
     }
@@ -58,6 +59,7 @@ export default function ManageExpense({ route, navigation }) {
             return;
         }
 
+        firebaseUpdateExpense(expenseID, expenseData)
         dispatch(updateExpense({ ...expenseData, id: expenseID }));
         navigation.goBack();
     }
