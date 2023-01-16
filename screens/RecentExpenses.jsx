@@ -55,8 +55,14 @@ export default function RecentExpenses() {
             console.log(userName);
         });
 
+        const subscription2 = Notifications.addNotificationResponseReceivedListener((response) => {
+            const userName = response.notification.request.content.data.userName;
+            console.log(userName);
+        });
+
         return () => {
             subscription.remove();
+            subscription2.remove();
         }
     }, []);
 
