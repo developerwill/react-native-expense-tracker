@@ -49,6 +49,17 @@ export default function RecentExpenses() {
         void getExpenses();
     }, []);
 
+    useEffect(() => {
+        const subscription = Notifications.addNotificationReceivedListener((notification) => {
+            const userName = notification.request.content.data.userName;
+            console.log(userName);
+        });
+
+        return () => {
+            subscription.remove();
+        }
+    }, []);
+
     const recentExpenses = useSelector((state) =>
         state.expensesList.allExpenses.filter((expense) => {
             const today = new Date();
