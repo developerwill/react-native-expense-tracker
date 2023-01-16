@@ -18,6 +18,7 @@ import Button from '../components/UI/Button';
 
 /* Notifications */
 import * as Notifications from 'expo-notifications';
+import axios from 'axios';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => {
@@ -36,15 +37,15 @@ export default function RecentExpenses() {
 
     useEffect(() => {
         async function configurePushNotification() {
-            const {status} = await Notifications.getPermissionsAsync();
+            const { status } = await Notifications.getPermissionsAsync();
             let currentStatus = status;
 
-            if(currentStatus !== 'granted') {
-                const {status} = await Notifications.requestPermissionsAsync();
+            if (currentStatus !== 'granted') {
+                const { status } = await Notifications.requestPermissionsAsync();
                 currentStatus = status;
             }
 
-            if(currentStatus !== 'granted') {
+            if (currentStatus !== 'granted') {
                 Alert.alert(
                     'Permission required',
                     'Push notifications need the appropriate permissions.'
@@ -126,6 +127,14 @@ export default function RecentExpenses() {
         });
     }
 
+    async function sendPushNotificationHandler() {
+        await axios.post('https://exp.host/--/api/v2/push/send', {
+            to: 'ExponentPushToken[CNtN3qLrOJuufJRZczrogF]',
+            title: 'Testing with api call!',
+            body: 'New article'
+        });
+    }
+
     return (
         <>
             <ExpensesOutput
@@ -133,6 +142,8 @@ export default function RecentExpenses() {
                 expensesPeriod={'Last 7 Days'}
                 fallbackText={'No expenses registered for the last 7 days'}
             />
+            <Button style={styles.scheduleButton} mode={'flat'} onPress={sendPushNotificationHandler}>Send Push
+                Notification</Button>
             <Button style={styles.scheduleButton} mode={'flat'} onPress={scheduleLocalNotificationHandler}>Schedule
                 Local Notification</Button>
         </>
