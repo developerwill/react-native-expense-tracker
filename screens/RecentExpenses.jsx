@@ -13,7 +13,7 @@ import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { getDateMinusDays } from '../utils/date';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
 import ErrorOverlay from '../components/UI/ErrorOverlay';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import Button from '../components/UI/Button';
 
 /* Notifications */
@@ -22,10 +22,10 @@ import * as Notifications from 'expo-notifications';
 Notifications.setNotificationHandler({
     handleNotification: async () => {
         return {
-            shouldPlaySound: false,
+            shouldPlaySound: true,
             shouldSetBadge: false,
             shouldShowAlert: true
-        }
+        };
     }
 });
 
@@ -33,6 +33,38 @@ export default function RecentExpenses() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function configurePushNotification() {
+            const {status} = await Notifications.getPermissionsAsync();
+            let currentStatus = status;
+
+            if(currentStatus !== 'granted') {
+                const {status} = await Notifications.requestPermissionsAsync();
+                currentStatus = status;
+            }
+
+            if(currentStatus !== 'granted') {
+                Alert.alert(
+                    'Permission required',
+                    'Push notifications need the appropriate permissions.'
+                );
+                return;
+            }
+
+            const pushTokenData = await Notifications.getExpoPushTokenAsync();
+            console.log(pushTokenData);
+
+            if (Platform.OS === 'android') {
+                await Notifications.setNotificationChannelAsync('default', {
+                    name: 'default',
+                    importance: Notifications.AndroidImportance.DEFAULT
+                });
+            }
+        }
+
+        void configurePushNotification();
+    }, []);
 
     useEffect(() => {
         async function getExpenses() {
@@ -51,19 +83,17 @@ export default function RecentExpenses() {
 
     useEffect(() => {
         const subscription = Notifications.addNotificationReceivedListener((notification) => {
-            const userName = notification.request.content.data.userName;
-            console.log(userName);
+            //const userName = notification.request.content.data.userName;
         });
 
         const subscription2 = Notifications.addNotificationResponseReceivedListener((response) => {
-            const userName = response.notification.request.content.data.userName;
-            console.log(userName);
+            //const userName = response.notification.request.content.data.userName;
         });
 
         return () => {
             subscription.remove();
             subscription2.remove();
-        }
+        };
     }, []);
 
     const recentExpenses = useSelector((state) =>
@@ -85,14 +115,14 @@ export default function RecentExpenses() {
 
     function scheduleLocalNotificationHandler() {
         void Notifications.scheduleNotificationAsync({
-           trigger: {
-               seconds: 2
-           },
-           content: {
-               title: 'Local notification',
-               body: 'This is the local notification',
-               data: { userName: 'Max'}
-           },
+            trigger: {
+                seconds: 2
+            },
+            content: {
+                title: 'Local notification',
+                body: 'This is the local notification',
+                data: { userName: 'Max' }
+            }
         });
     }
 
